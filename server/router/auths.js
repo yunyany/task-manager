@@ -1,12 +1,12 @@
 import express from 'express'
-import auth from '../middleware';
+import auth from '../middleware.js';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import pool from '../db';
+import pool from '../db.js';
 
-const auths = express.Router()
+const router = express.Router()
 //登录请求 ok
-auths.post('/api/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
         res.status(400).json({
@@ -70,7 +70,7 @@ auths.post('/api/login', async (req, res) => {
 })
 
 // 获取用户数据
-auths.get('/api/me', auth, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
     try {
         // req.user.id 来自 auth 中间件解析出来的 token payload
         // 注意列名是 created_at，别拼错
@@ -92,7 +92,7 @@ auths.get('/api/me', auth, async (req, res) => {
 })
 
 // 注册
-auth.post('/api/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body
         if (!username || !password) {
@@ -122,4 +122,4 @@ auth.post('/api/register', async (req, res) => {
     }
 })
 
-export default auths;
+export default router;

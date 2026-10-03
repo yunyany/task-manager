@@ -1,14 +1,14 @@
 import express from 'express'
-import auth from '../middleware'
-import { exprieOverdueTasks } from '../middleware'
-import pool from '../db'
+import auth from '../middleware.js'
+import { exprieOverdueTasks } from '../middleware.js'
+import pool from '../db.js'
 
-const tasks = express.Router()
+const router = express.Router()
 
-tasks.use(auth)
+router.use(auth)
 
 // 查询任务列表
-tasks.get('/api/tasks', async (req, res) => {
+router.get('/tasks', async (req, res) => {
     try {
         const { created_at, status, priority } = req.query
         //先把超时的任务打入冷宫(status=2)
@@ -46,7 +46,7 @@ tasks.get('/api/tasks', async (req, res) => {
 })
 
 // 创建任务
-tasks.post('/api/tasks', async (req, res) => {
+router.post('/tasks', async (req, res) => {
     try {
         const { title, description = null, priority = 2, due_date = null } = req.body
 
@@ -82,7 +82,7 @@ tasks.post('/api/tasks', async (req, res) => {
 })
 
 // 修改任务
-tasks.put('/api/tasks/:id', async (req, res) => {
+router.put('/tasks/:id', async (req, res) => {
     try {
         const { status, title, description } = req.body
 
@@ -118,7 +118,7 @@ tasks.put('/api/tasks/:id', async (req, res) => {
 })
 
 // 删除任务
-tasks.delete('/api/tasks/:id', async (req, res) => {
+router.delete('/tasks/:id', async (req, res) => {
     try {
         const sqlstr = 'delete from tasks where id = ? and user_id = ?'
         const [result] = await pool.query(sqlstr, [req.params.id, req.user.id])
@@ -136,7 +136,7 @@ tasks.delete('/api/tasks/:id', async (req, res) => {
 })
 
 // 获取每日任务 tasks库
-tasks.get('/api/everyday', async (req, res) => {
+router.get('/everyday', async (req, res) => {
     try {
         await exprieOverdueTasks(req.user.id)
         const { due_date } = req.query
@@ -156,4 +156,4 @@ tasks.get('/api/everyday', async (req, res) => {
     }
 })
 
-export default tasks;
+export default router;

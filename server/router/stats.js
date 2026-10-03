@@ -1,14 +1,14 @@
 import express from 'express'
-import auth from '../middleware'
-import { exprieOverdueTasks } from '../middleware'
-import pool from '../db'
+import auth from '../middleware.js'
+import { exprieOverdueTasks } from '../middleware.js'
+import pool from '../db.js'
 import dayjs from 'dayjs'
 
-const stats = express.Router()
-stats.use(auth)
+const router = express.Router()
+router.use(auth)
 
 // 打卡 checkins库
-stats.post('/api/checkins', async (req, res) => {
+router.post('/checkins', async (req, res) => {
     try {
         await pool.query(`
             insert into checkins(user_id,study_date)
@@ -28,7 +28,7 @@ stats.post('/api/checkins', async (req, res) => {
 })
 
 // 获取打卡内容 checkins库
-stats.get('/api/stats', async (req, res) => {
+router.get('/stats', async (req, res) => {
     try {
         await exprieOverdueTasks(req.user.id)
         const [taskRows] = await pool.query(`
@@ -81,7 +81,7 @@ stats.get('/api/stats', async (req, res) => {
 })
 
 // 存入当前专注s
-stats.post('/api/time', async (req, res) => {
+router.post('/time', async (req, res) => {
     try {
         const { mode, seconds, completed } = req.body
         await pool.query(`
@@ -99,7 +99,7 @@ stats.post('/api/time', async (req, res) => {
 })
 
 // 获取总时间
-stats.get('/api/allTime', async (req, res) => {
+router.get('/allTime', async (req, res) => {
     try {
         const [rows] = await pool.query(`
         select seconds,completed,mode from study_sessions 
@@ -128,4 +128,4 @@ stats.get('/api/allTime', async (req, res) => {
     }
 })
 
-export default stats;
+export default router;
