@@ -122,4 +122,50 @@ router.post('/register', async (req, res) => {
     }
 })
 
+// 修改密码
+router.put('/password', auth, async (req, res) => {
+    try {
+        const { newPassword,oldPassword} = req.body
+        if(!newPassword || !oldPassword){
+            return res.status(400).json({tip:'密码不能为空'})
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ tip: '新密码至少需要6位' })
+        }
+
+        const [rows] = await pool.query(`
+        SELECT password_hash FROM users WHERE id = ?
+            `, [req.user.id]);
+        if(rows.length === 0){
+            return res.status(401).json({tip:'用户不存在'})
+        }
+        const user = rows[0];
+
+        const ok = await bcrypt.compare(oldPassword, user.password_hash);
+        if (!ok) {
+            return res.status(401).json({
+                tip: '输入旧密码错误'
+            })
+        }
+        const isSame = await bcrypt.compare(newPassword,user.password_hash)
+        if(isSame){
+            return res.status(400).json({tip:'新密码不能与旧密码相同'})
+        }
+
+        const password_hash = await bcrypt.hash(newPassword,10)
+
+        await pool.query(`
+        update users set password_hash = ? where id = ?
+        `, [password_hash,req.user.id])
+
+        res.json({ok:true})
+
+    }
+    catch (err) {
+        console.error(err)
+        if (res.headersSent) return
+        res.status(500).json({ tip: '服务器出错了' })
+    }
+})
+
 export default router;

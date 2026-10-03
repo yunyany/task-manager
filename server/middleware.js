@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken'
-import express from 'express'
 import pool from './db.js'
-const app = express()
 
 /**
  * 认证中间件：检查请求头里的 token 有没有效
@@ -22,7 +20,7 @@ const auth = (req, res, next) => {
     // 情况一：压根没带 token —— 就是没登录
     // 这里必须 return，否则代码会继续往下走到 verify，白白抛一次异常
     if (!token) {
-        return res.status(401).json({ tip: '未登录' })
+        return res.status(401).json({ tip: '未登录', code: 'TOKEN_INVALID' })
     }
 
     try {
@@ -44,13 +42,14 @@ const auth = (req, res, next) => {
         // 情况二：token 被篡改 / 已过期 / 格式不对
         // 统一返回 401，前端看到 401 就知道该把用户请回登录页了。
         // 不给用户看具体是哪种错（防止有人靠错误信息试探）
-        return res.status(401).json({ tip: '登录已过期，请重新登录' })
+        return res.status(401).json({ tip: '登录已过期，请重新登录',code:'TOKEN_INVALID' })
     }
 }
 
 
 export default auth
 export const exprieOverdueTasks = async (userid)=>{
+    // 处理超时
     await pool.query(
         'update tasks set status = 2 where status = 0 and user_id = ? and due_date is not null and due_date < now()',
         [userid]

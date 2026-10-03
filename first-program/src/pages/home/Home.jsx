@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../../store/modules/user';
+import { changePwd } from '../../api/auth';
 
 
 const { Header, Sider, Content } = Layout;
@@ -17,10 +18,6 @@ const items = ["今日概况", "任务管理", "学习日常", "添加任务"].m
 })
 //下拉框的元素
 const dropItems = [
-    {
-        label: <div>我的信息</div>,
-        key: 'info'
-    },
     {
         label: <div>修改密码</div>,
         key: 'update'
@@ -38,6 +35,13 @@ const Home = () => {
     const [userfold, setUserfold] = useState(false)
     const location = useLocation()
     const lightkey = location.pathname
+
+    const [newPwd, setNewPwd] = useState('')
+    const [oldPwd, setOldPwd] = useState('')
+    const [confirmPwd, setConfirmPwd] = useState('')
+
+    const [change, setChange] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     //退出登录
     const logout = () => {
@@ -59,14 +63,55 @@ const Home = () => {
         })
 
     }
+ 
+    const onOk = async () => {
+        if (!oldPwd || !newPwd || !confirmPwd) {
+            message.warning('密码不能为空')
+            return Promise.reject()
+        }
+        if (newPwd.length < 6) {
+            message.warning('新密码至少需要6位');
+            return Promise.reject()
+        }
+        if (newPwd !== confirmPwd) {
+            message.warning('两次新密码不一致');
+            return Promise.reject()
+        }
+        if(newPwd === oldPwd){
+            message.warning('新密码不能与旧密码相同')
+            return Promise.reject()
+        }
+
+        setIsSubmitting(true)
+        try {
+            await changePwd(oldPwd, newPwd)
+            onCancel()
+            message.success('密码已修改，请重新登录')
+            dispatch(clearUser())
+        }
+        catch (err) {
+            message.error(err.message)
+            return Promise.reject()
+        }
+        finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const onCancel = () => {
+        setConfirmPwd('')
+        setOldPwd('')
+        setNewPwd('')
+        setChange(false)
+    }
 
     return (
         <Layout className="geek-layout">
             {/* 左侧导航栏 */}
-            <Sider 
-            breakpoint='md'
-            width={'25vh'} 
-            className="home-sider" theme="dark">
+            <Sider
+                breakpoint='md'
+                width={'25vh'}
+                className="home-sider" theme="dark">
                 <div className="home-logo">首页</div>
                 <Menu
                     mode="inline"
@@ -87,8 +132,7 @@ const Home = () => {
                             items: dropItems,
                             onClick: ({ key }) => {
                                 if (key === 'logout') logout();
-                                else if(key === 'update');
-                                else if(key === 'info');
+                                else if (key === 'update') setChange(true);
                             }
                         }}
                         trigger={['click']}
@@ -115,6 +159,46 @@ const Home = () => {
                     <Outlet />
                 </Content>
             </Layout>
+            <Modal
+                title={'修改密码'}
+                open={change}
+                centered={true}
+                onCancel={() => onCancel()}
+                onOk={() => onOk()}
+                okButtonProps={{
+                    loading: isSubmitting
+                }}
+            >
+                <div className='pwd-modal-content'>
+                    <div className='pwd-modal-row'>
+                        <label>旧密码:</label>
+                        <input
+                            value={oldPwd}
+                            onChange={(e) => setOldPwd(e.target.value)}
+                            type='password'
+                            placeholder='请输入旧密码'
+                        />
+                    </div>
+                    <div className='pwd-modal-row'>
+                        <label>新密码:</label>
+                        <input
+                            value={newPwd}
+                            onChange={(e) => setNewPwd(e.target.value)}
+                            type='password'
+                            placeholder='请输入新密码'
+                        />
+                    </div>
+                    <div className='pwd-modal-row'>
+                        <label>确认新密码:</label>
+                        <input
+                            value={confirmPwd}
+                            onChange={(e) => setConfirmPwd(e.target.value)}
+                            type='password'
+                            placeholder='请再次输入新密码'
+                        />
+                    </div>
+                </div>
+            </Modal>
         </Layout>
     );
 }

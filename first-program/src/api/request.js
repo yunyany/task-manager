@@ -27,7 +27,7 @@ request.interceptors.request.use(
     },
     (err) => {
         return Promise.reject(err)
-    })
+    }) 
 
 // ── 响应拦截器：统一的错误处理 ──
 request.interceptors.response.use(
@@ -36,12 +36,12 @@ request.interceptors.response.use(
     (err) => {
         // 401跳登录页，500弹提示
         if (err.response) {
-            const { status, data, config } = err.response
+            const { status, data } = err.response
 
             // 401 = 登录态失效。
             // 但有个例外：登录接口自己的 401 是"密码错"，不是"登录过期"，
             // 必须放过它，否则用户打错密码页面会被整个踢回登录页
-            if (status === 401 && !config.url.includes('/login')) {
+            if (status === 401 && data?.code === 'TOKEN_INVALID') {
                 store.dispatch(clearUser())
                 message.error('登录已过期，请重新登录')
             }

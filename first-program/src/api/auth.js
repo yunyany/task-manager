@@ -10,7 +10,10 @@ const getMe = async () => {
     return data;
 }
 
+const changePwd = async (oldPassword,newPassword)=>{
+    const { data } = await request.put('/password',{oldPassword,newPassword})
+    return data
+} 
 
 
-
-export { login, getMe };
+export { login, getMe, changePwd };
