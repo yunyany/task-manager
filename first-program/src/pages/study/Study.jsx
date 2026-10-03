@@ -9,6 +9,7 @@ const _mode = {
     'longRest': 3
 }
 const Study = () => {
+    const DEV_FAST = false
     const MIN_SECONDS = 60 //最低学习时间(s)
     const [work, setWork] = useState(25)
     const [rest, setRest] = useState(5)
@@ -39,6 +40,7 @@ const Study = () => {
     }
 
     const sendTime = async (focused, isover) => {
+        focused = focused * (DEV_FAST?60:1)
         try {
             if (focused >= MIN_SECONDS) {
                 await postTime({
