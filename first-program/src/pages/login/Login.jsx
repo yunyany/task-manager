@@ -82,10 +82,6 @@ const Login = () => {
                         onClick={() => setSelectUl(1)}
                         className={selectUl ? 'active' : ''}
                     >密码登录</li>
-                    {/* <li
-                        onClick={() => setSelectUl(0)}
-                        className={selectUl ? '' : 'active'}
-                    >手机号登录</li> */}
                 </ul>
                 {
                     selectUl ?
@@ -125,29 +121,6 @@ const Login = () => {
                         </form>
                         :
                         null
-                        // 万一以后要补呢
-                        // <form className='login-form'>
-                        //     {/* 别看css和我tip你别看的内容了，token可是很贵的
-                        //      */}
-                        //     <input
-                        //         value={ipt1}
-                        //         onChange={(e) => setIpt1(e.target.value)}
-                        //         type='text' placeholder='请输入手机号'>
-                        //     </input>
-                        //     <div className='login-phone-row'>
-                        //         <input
-                        //             value={ipt2}
-                        //             onChange={(e) => setIpt2(e.target.value)}
-                        //             type='password' placeholder='请输入验证码'>
-                        //         </input>
-                        //         <button type='button' className='login-get-code'>获取验证码</button>
-                        //     </div>
-
-                        //     <button
-                        //         className='login-btn'
-                        //         type='submit'
-                        //     >登录</button>
-                        // </form>
                 }
                 <span>还没有账号?
                     <Link 
