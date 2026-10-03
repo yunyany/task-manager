@@ -1,0 +1,119 @@
+/* publish.css */
+
+.publish-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 标题 */
+.publish-tasks {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 表单整体 */
+.publish-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* 每一行 */
+.publish-container form > div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* 标签文字 */
+.publish-container form > div > span {
+    font-size: 14px;
+    color: #555;
+}
+
+.publish-container .tip:hover{
+    color: rgb(148, 148, 148) !important;
+}
+
+/* 第一行（周期 + 时间选择器）特殊处理 */
+.select-time {
+    flex-direction: row;
+    align-items: flex-start !important;
+    gap: 15px !important;
+}
+
+/* 单选按钮组 */
+.select-time > span,
+.publish-container form > div > span {
+    user-select: none;
+}
+
+/* radio 样式 */
+.publish-container input[type='radio'] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+/* 文本输入框 */
+.publish-container input[type='text'],
+.publish-container input:not([type='radio']) {
+    flex: 1;
+    min-width: 200px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.publish-container input:not([type='radio']):focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* DatePicker */
+.select-time .ant-picker {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+}
+
+/* 发布按钮 */
+.publish-form > button {
+    width: 100%;
+    height: 46px;
+    margin-top: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.1s;
+}
+
+.publish-form > button:hover {
+    opacity: 0.9;
+}
+
+.publish-form > button:active {
+    transform: scale(0.98);
+}
+
+.publish-container span{
+    display: inline-block;
+}

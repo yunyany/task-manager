@@ -1,0 +1,221 @@
+/* study.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.study-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+/* ===== 番茄钟卡片 ===== */
+.study-pomodoro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 30px 40px;
+    background: linear-gradient(135deg, #9daebf 0%, rgb(38, 49, 69) 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    color: #fff;
+}
+
+/* 顶部栏：设置 / 时长 / 最大化 横向排列 */
+.pomodoro-top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 14px;
+}
+
+.study-setting,
+.study-expand {
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.3s;
+}
+
+.study-setting:hover,
+.study-expand:hover {
+    opacity: 1;
+}
+
+/* 时长选项横向排列 */
+.study-setting-list {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+    font-size: 15px;
+}
+
+.study-setting-list li {
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 18px;
+    background-color: rgb(70, 82, 106);
+    transition: background 0.3s;
+}
+
+.study-setting-list li:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 工作法选择 */
+.study-setting-list .study-select{
+    box-sizing: border-box;
+    border: 2px solid white;
+    background-color: rgb(255, 88, 88);
+}
+
+/* 中间倒计时 */
+.pomodoro-clock {
+    display: flex;
+    align-items: center;
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px 0 20px 0;
+}
+
+.pomodoro-clock i {
+    font-style: normal;
+    margin: 0 6px;
+    opacity: 0.7;
+    /* animation: blink 1s step-start infinite; */
+}
+
+@keyframes blink {
+    50% { opacity: 0.2; }
+}
+
+/* 开始 / 重置：横向拉开 */
+.pomodoro-btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+}
+
+.study-start,
+.study-reset,
+.study-suspend {
+    padding: 10px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.study-start {
+    background: #fff;
+    color: #667eea;
+}
+
+.study-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.cannot-suspend{
+    display: none;
+}
+
+.study-suspend{
+    background-color: #c4c4c4;
+}
+
+.study-reset {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.study-reset:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 启用通知 */
+.study-notice {
+    padding: 10px 30px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.study-notice:hover {
+    background: #fff;
+    color: #667eea;
+}
+
+/* ===== 已完成统计区 ===== */
+.accomplish-study {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+/* 每块统计 */
+.accomplish-tomato,
+.study-sumTime {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    font-size: 15px;
+    color: #666;
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.accomplish-tomato:hover,
+.study-sumTime:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* 数值部分 */
+.accomplish-tomato > span:last-child,
+.study-sumTime > span:not(:first-child) {
+    font-size: 20px;
+    font-weight: 700;
+    color: #667eea;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 已完成的番茄：绿色 */
+.accomplish-tomato > span:last-child {
+    color: #52c41a;
+}
+
+/* "秒 = " 和 "分钟" 的说明文字 */
+.study-sumTime i {
+    font-style: normal;
+    font-size: 13px;
+    color: #727272;
+}

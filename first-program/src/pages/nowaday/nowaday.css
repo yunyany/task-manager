@@ -1,0 +1,296 @@
+/* nowaday.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nowaday-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* 标题 */
+.nowaday-punch {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+
+/* 连续打卡天数 */
+.nowaday-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 18px;
+}
+
+.nowaday-num span:last-child {
+    font-size: 26px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* 今日打卡 */
+.nowaday-today {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 16px;
+    background: #f0f5ff;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.nowaday-today span {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+}
+
+.nowaday-today button {
+    padding: 8px 24px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.1s;
+}
+
+.nowaday-today button:hover {
+    opacity: 0.9;
+}
+
+.nowaday-today button:active {
+    transform: scale(0.97);
+}
+
+.nowaday-today .ispunch{
+    background: #9b9b9b;
+}
+
+/* 任务情况区 */
+.nowaday-task-title {
+    border-bottom: 2px solid #eee;
+    padding: 35px 0 15px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin: 35px 0 10px;
+}
+
+/* ⚠️ ECharts 的容器【必须有明确的高度】，否则它画不出来。
+   div 里如果只有文字，高度就是一行字（约 21px），
+   饼图会被压缩到几个像素 —— 看起来就像"没渲染"。
+   这个坑和 canvas 一样：宽高为 0 或过小，画面就是空的。 */
+.nowaday-chart {
+    width: 100%;
+    height: 320px;
+}
+
+/* 没有任何任务时的占位提示（保持和图表一样的高度，避免布局跳动） */
+.nowaday-chart-empty {
+    width: 100%;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+    background: #fafafa;
+    border-radius: 10px;
+}
+
+
+/* 今日待完成任务 */
+.nowaday-wait{
+    border-bottom: 2px solid #eee;
+    padding: 15px 0 15px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin: 25px 0 10px;
+}
+
+
+/* ===== 任务情况标题 ===== */
+.nowaday-task-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+    margin: 25px 0 15px;
+    padding-left: 4px;
+    border-top: 4px solid #ffde7c;
+    padding-left: 10px;
+}
+
+/* ===== 图表区 ===== */
+.nowaday-chart {
+    width: 100%;
+    height: 280px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background: #fcfcfc;
+}
+
+.nowaday-chart-empty {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    background: #fcfcfc;
+    color: #999;
+    font-size: 15px;
+}
+
+/* ===== 今日待完成任务 ===== */
+.nowaday-wait {
+    font-size: 17px;
+    
+    font-weight: 600;
+    color: #333;
+    margin: 35px 0 15px;
+    padding: 35px 0 25px 0;
+    padding-left: 4px;
+    border-top: 4px solid #52c41a;
+    padding-left: 10px;
+}
+
+.nowaday-tasklist-show {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+/* 单条任务卡片 */
+.nowaday-tasklist-item {
+    position: relative;
+    background: #fff;
+    border: 1px solid #eee;
+    border-left: 4px solid #667eea;
+    border-radius: 8px;
+    padding: 14px 16px;
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+
+.nowaday-tasklist-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* 任务标题 */
+.tasklist-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* 未完成角标 */
+.tasklist-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 12px;
+    background: #faad14;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 0 8px 0 8px;
+}
+
+/* 描述文本域（只读） */
+.tasklist-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    resize: none;
+    font-family: inherit;
+    background: #fafafa;
+}
+
+.tasklist-desc:focus {
+    border-color: #ddd !important;
+}
+
+/* 底部信息行 */
+.tasklist-other {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #999;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #f0f0f0;
+}
+
+/* 优先级标签 */
+.tasklist-other .high,
+.tasklist-other .middle,
+.tasklist-other .low {
+    display: inline-block;
+    padding: 1px 8px;
+    margin-left: 4px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.tasklist-other .high {
+    color: #ff4d4f;
+    background: #fff1f0;
+}
+
+.tasklist-other .middle {
+    color: #52c41a;
+    background: #f6ffed;
+}
+
+.tasklist-other .low {
+    color: #13c2c2;
+    background: #e6fffb;
+}
+
+/* 暂无任务 */
+.nowaday-tasklist-none {
+    width: 80%;
+    height: 120px;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fcfcfc;
+    border: 1px solid #ddd;
+    border-left: 5px solid #52c41a;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #999;
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+
+.nowaday-tasklist-none:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
