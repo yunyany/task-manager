@@ -192,7 +192,7 @@ React19/
 │       │   ├── login/              # 登录
 │       │   ├── register/           # 注册
 │       │   ├── home/               # 主布局：侧边导航 + 顶栏 + <Outlet/>
-│       │   ├── nowaday/            # 今日概况（打卡 + 饼图 + 待办）
+│       │   ├── nowaday/            # 今日概况（打卡 + 饼图 +待办）
 │       │   ├── task/               # 任务管理
 │       │   ├── publish/            # 添加任务
 │       │   └── study/              # 番茄钟
@@ -208,7 +208,7 @@ React19/
     ├── db.js                       # mysql2 连接池
     ├── middleware.js               # 鉴权中间件 + 过期任务处理
     └── router/
-        ├── auths.js                # 注册 / 登录 / 当前用户
+        ├── auths.js                # 注册 / 登录 / 当前用户 / 更改密码
         ├── tasks.js                # 任务 CRUD + 每日待办
         └── stats.js                # 打卡 / 概览统计 / 番茄时长
 ```
@@ -242,6 +242,7 @@ Authorization: Bearer <token>
 | GET | `/api/stats` | 概览统计（打卡天数 + 任务分布） | 是 |
 | POST | `/api/time` | 记录一段专注时长 | 是 |
 | GET | `/api/allTime` | 累计专注时长 + 完成番茄数 | 是 |
+| PUT| `/password`| 修改密码|是|
 
 ### 状态码约定
 
@@ -250,7 +251,7 @@ Authorization: Bearer <token>
 | 200 | 成功 | 查询、更新 |
 | 201 | 创建成功 | 注册、新建任务 |
 | 400 | 参数不合法 | 必填项为空、两次密码不一致等 |
-| 401 | 未认证 | 密码错误、token 无效或过期 |
+| 401 | 未认证 | 密码错误、token 无效或过期(code="TOKEN_INVALID") |
 | 404 | 资源不存在 | 任务不存在，**或存在但不属于当前用户** |
 | 409 | 冲突 | 用户名已被占用 |
 | 500 | 服务器内部错误 | 兜底 |
@@ -307,7 +308,7 @@ const t = Math.max(0, Math.round((endTimeRef.current - Date.now()) / 1000))
 
 `first-program/src/api/request.js` 里的响应拦截器统一做三件事：
 
-- `401` → 清空登录态（守卫会自动跳回登录页）；**但放过 `/login` 自身的 401**，否则用户打错密码会被当成「登录过期」
+- `401` → 清空登录态（守卫会自动跳回登录页）；**但放过code值为undefined的请求**，否则用户打错密码会被当成「登录过期」
 - 把后端返回的 `{ tip }` 翻译成标准 `Error`，页面里 `catch (err) { message.error(err.message) }` 即可
 - 区分「服务器答复了但状态码不对」（有 `err.response`）和「请求根本没到服务器」（没有 `err.response`，多为网络故障或后端未启动）
 
@@ -318,7 +319,6 @@ const t = Math.max(0, Math.round((endTimeRef.current - Date.now()) / 1000))
 - **番茄钟运行中切换页面会中断计时** —— 计时状态保存在组件内，离开页面即重置
 - **关闭浏览器时正在进行的专注不会被记录** —— 记录只在「一轮结束」时提交
 - 手机号登录尚未实现
-- 修改密码尚未实现
 - `tasks.completed_at` 字段已建但暂未使用（保留给后续的「完成时间」统计）
 
 ## 生产构建
