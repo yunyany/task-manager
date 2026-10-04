@@ -325,6 +325,7 @@ const t = Math.max(0, Math.round((endTimeRef.current - Date.now()) / 1000))
 - 手机号登录尚未实现
 - 修改密码后，此前签发的 token 在有效期内依然可用（JWT 无状态的固有代价）
 - `tasks.completed_at` 字段已建但暂未使用（保留给后续的「完成时间」统计）
+- 前端未做代码分割，首屏 JS 约 2MB（含 antd + ECharts），弱网下加载较慢
 
 ## 生产构建
 
